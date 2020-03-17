@@ -1,12 +1,11 @@
 import React from 'react'
-import Button from 'ui/button'
-import TextField from 'ui/textField'
+
+import LoginForm from 'component/loginForm'
 
 function App() {
   return (
     <div className="App">
-      <Button>Hello</Button>
-      <TextField />
+      <LoginForm />
     </div>
   )
 }

@@ -8,13 +8,24 @@
     "@testing-library/user-event": "^7.1.2",
     "react": "^16.13.0",
     "react-dom": "^16.13.0",
-    "react-scripts": "3.4.0"
+    "react-scripts": "3.4.0",
+    "@emotion/core": "^10.0.28",
+    "@emotion/styled": "^10.0.27",
+    "emotion": "^10.0.27",
+    "emotion-theming": "^10.0.27",
+    "polished": "^3.4.4"
+  },
+  "devDependencies": {
+    "cypress": "^4.1.0",
+    "eslint-plugin-cypress": "^2.10.3",
+    "@testing-library/cypress": "^6.0.0"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "cypress:open": "cypress open"
   },
   "eslintConfig": {
     "extends": "react-app"

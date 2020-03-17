@@ -1,12 +1,15 @@
 import React from 'react'
 
+import {ThemeProvider} from 'emotion-theming'
+import theme from './util/theme'
+
 import LoginForm from 'component/loginForm'
 
 function App() {
   return (
-    <div className="App">
+    <ThemeProvider theme={theme}>
       <LoginForm />
-    </div>
+    </ThemeProvider>
   )
 }
 

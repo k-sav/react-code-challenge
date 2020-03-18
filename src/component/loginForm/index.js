@@ -38,7 +38,6 @@ function LoginForm() {
     <div css={style}>
       <form onSubmit={onSubmit}>
         <h1>Login </h1>
-        <h2>{xAuthState.value}</h2>
         <TextField
           type="email"
           label="Email"

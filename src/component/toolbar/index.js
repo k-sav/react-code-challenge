@@ -1,5 +1,5 @@
 /** @jsx jsx */
-import React from 'react'
+import {useContext, useState} from 'react'
 import {jsx} from '@emotion/core'
 
 import Button from 'ui/button'
@@ -9,10 +9,15 @@ import notify from 'util/notify'
 import ToolbarStyle from './style'
 
 function Toolbar() {
-  const {state, setState} = React.useContext(AuthContext)
+  const {state, setState} = useContext(AuthContext)
+  const [isNotifyPending, setNotifyPending] = useState(false)
 
   const notifyClickhandler = payload => {
-    notify(state.user).then(res => console.log(res))
+    setNotifyPending(true)
+    notify(state.user).then(res => {
+      console.log(res)
+      setNotifyPending(false)
+    })
   }
 
   return (
@@ -20,8 +25,9 @@ function Toolbar() {
       <Button
         version="secondary"
         onClick={() => notifyClickhandler(state.user)}
+        disabled={isNotifyPending}
       >
-        Notify
+        Notify {isNotifyPending ? '...' : ''}
       </Button>
       <Button
         version="tertiary"

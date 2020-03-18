@@ -8,15 +8,10 @@ import {AuthContext} from 'util/auth'
 import ToolbarStyle from './style'
 
 function Toolbar() {
-  // eslint-disable-next-line no-unused-vars
-  const {state, _setState} = React.useContext(AuthContext)
+  const {state, setState} = React.useContext(AuthContext)
 
   const notify = payload => {
     console.log(payload)
-  }
-
-  const logout = payload => {
-    console.log('logout')
   }
 
   return (
@@ -24,7 +19,10 @@ function Toolbar() {
       <Button version="secondary" onClick={() => notify(state.user)}>
         Notify
       </Button>
-      <Button version="tertiary" onClick={() => logout()}>
+      <Button
+        version="tertiary"
+        onClick={() => setState({...state, user: null})}
+      >
         Logout
       </Button>
     </div>

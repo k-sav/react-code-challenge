@@ -4,7 +4,7 @@ import {jsx} from '@emotion/core'
 
 import TextField from 'ui/textField'
 import Button from 'ui/button'
-import {AuthContext} from 'util/auth'
+import {AuthContext, useAuthState} from 'util/auth'
 import {fetchUser, setUser} from 'util/user'
 import {validEmail} from '../../util/validation'
 
@@ -12,7 +12,7 @@ import style from './style'
 
 function LoginForm() {
   const {state, setState} = React.useContext(AuthContext)
-  const {isPending, isError, error} = state
+  const {isPending, isError, error} = useAuthState()
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
 
@@ -41,14 +41,12 @@ function LoginForm() {
           value={password}
           set={setPassword}
         />
-        <div hidden={!error} className="feedback" aria-live="assertive">
+        <div hidden={!isError} className="feedback" aria-live="assertive">
           {error}
         </div>
         <Button
           version="primary"
-          disabled={
-            isPending || isError || !email || !password || !validEmail(email)
-          }
+          disabled={isPending || !email || !password || !validEmail(email)}
         >
           Login
         </Button>

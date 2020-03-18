@@ -1,40 +1,43 @@
 import React from 'react'
-import {storedUser, removeUser} from './user'
+import {State} from 'xstate'
+import {useMachine} from '@xstate/react'
+
+import authMachine from 'util/authStateMachine'
+
+// Check localstorage for a saved state
+// then if it exists, create a state we can initialise with
+const stateDefinition = JSON.parse(localStorage.getItem('stored-state'))
+let previousState = null
+if (stateDefinition) {
+  previousState = State.create(stateDefinition)
+  console.log(previousState)
+}
 
 const AuthContext = React.createContext()
+
 function AuthProvider({children}) {
-  const [state, setState] = React.useState({
-    status: 'success',
-    error: null,
-    user: storedUser(),
+  const [xAuthState, sendEvent, service] = useMachine(authMachine, {
+    state: previousState,
   })
 
-  React.useEffect(() => {
-    if (!state.user) {
-      removeUser()
-    }
-  }, [state])
+  // Persist state to locastorage when we:
+  // - have transitioned to 'authorized' state
+  // - send the 'LOGOUT' event
+
+  service.onTransition((state, event) => {
+    if (state.value === 'authorized' || event.type === 'LOGOUT')
+      try {
+        localStorage.setItem('stored-state', JSON.stringify(state))
+      } catch (e) {
+        console.error('Unable to save to localStorage')
+      }
+  })
 
   return (
-    <AuthContext.Provider value={{state, setState}}>
+    <AuthContext.Provider value={{xAuthState, sendEvent}}>
       {children}
     </AuthContext.Provider>
   )
 }
 
-function useAuthState() {
-  const {state} = React.useContext(AuthContext)
-  const isPending = state.status === 'pending'
-  const isError = state.status === 'error'
-  const isSuccess = state.status === 'success'
-  const isAuthenticated = state.user && isSuccess
-  return {
-    ...state,
-    isPending,
-    isError,
-    isSuccess,
-    isAuthenticated,
-  }
-}
-
-export {AuthProvider, useAuthState, AuthContext}
+export {AuthProvider, AuthContext}

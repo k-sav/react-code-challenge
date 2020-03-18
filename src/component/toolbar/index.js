@@ -9,12 +9,12 @@ import notify from 'util/notify'
 import ToolbarStyle from './style'
 
 function Toolbar() {
-  const {state, setState} = useContext(AuthContext)
   const [isNotifyPending, setNotifyPending] = useState(false)
+  const {xAuthState, sendEvent} = useContext(AuthContext)
 
   const notifyClickhandler = payload => {
     setNotifyPending(true)
-    notify(state.user).then(res => {
+    notify(payload).then(res => {
       console.log(res)
       setNotifyPending(false)
     })
@@ -24,15 +24,12 @@ function Toolbar() {
     <div css={ToolbarStyle}>
       <Button
         version="secondary"
-        onClick={() => notifyClickhandler(state.user)}
+        onClick={() => notifyClickhandler(xAuthState.context.user)}
         disabled={isNotifyPending}
       >
         Notify {isNotifyPending ? '...' : ''}
       </Button>
-      <Button
-        version="tertiary"
-        onClick={() => setState({...state, user: null})}
-      >
+      <Button version="tertiary" onClick={() => sendEvent({type: 'LOGOUT'})}>
         Logout
       </Button>
     </div>

@@ -35,3 +35,16 @@ describe('Login button', function() {
     cy.get('button').should('be.enabled')
   })
 })
+
+describe('Unsuccessful login', function() {
+  beforeEach(function() {
+    cy.visit('/')
+  })
+
+  it('should display Error feedback on login attempt with invalid password', function() {
+    cy.get('#emailInput').type(testEmailValid)
+    cy.get('#passwordInput').type(testPasswordInvalid)
+    cy.get('button').click()
+    cy.get('.feedback').should('be.visible')
+  })
+})

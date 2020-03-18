@@ -1,7 +1,11 @@
+/** @jsx jsx */
 import React, {useState} from 'react'
+import {jsx} from '@emotion/core'
 
 import TextField from 'ui/textField'
 import Button from 'ui/button'
+
+import style from './style'
 
 function LoginForm() {
   const [email, setEmail] = useState('')
@@ -12,7 +16,7 @@ function LoginForm() {
   }
 
   return (
-    <div>
+    <div css={style}>
       <form onSubmit={onSubmit}>
         <h1>Login</h1>
         <TextField type="email" label="Email" value={email} set={setEmail} />

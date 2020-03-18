@@ -26,7 +26,9 @@ function LoginForm() {
           value={password}
           set={setPassword}
         />
-        <Button version="primary">Login</Button>
+        <Button version="primary" disabled={!email || !password}>
+          Login
+        </Button>
       </form>
     </div>
   )

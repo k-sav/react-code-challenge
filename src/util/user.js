@@ -11,6 +11,10 @@ const removeUser = () => {
 }
 
 async function fetchUser(email = '', password = '') {
+  if (!process.env.REACT_APP_API_BASE) {
+    console.error('Set REACT_APP_API_BASE in env')
+    return
+  }
   const response = await fetch(`${process.env.REACT_APP_API_BASE}/login`, {
     method: 'POST',
     cache: 'no-cache',

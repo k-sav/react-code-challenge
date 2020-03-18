@@ -48,3 +48,34 @@ describe('Unsuccessful login', function() {
     cy.get('.feedback').should('be.visible')
   })
 })
+
+describe('Successful login', function() {
+  beforeEach(function() {
+    cy.visit('/')
+    cy.login(testEmailValid, testPasswordValid)
+  })
+
+  it('Shows x devices online header', function() {
+    cy.get('h1').should('contain', 'Devices online')
+  })
+
+  it('Shows the devices', function() {
+    cy.get('ul').should('exist')
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
+    cy.wait(500)
+    cy.get('.device').should('not.have.length', 0)
+  })
+
+  it('Shows the toolbar buttons', function() {
+    cy.findByText('Notify').should('exist')
+    cy.findByText('Logout').should('exist')
+  })
+
+  it('Goes back to login screen after clicking logout', function() {
+    cy.findByText('Logout').click()
+    cy.findByText('Devices online').should('not.exist')
+    cy.findAllByText('Login')
+      .first()
+      .should('exist')
+  })
+})

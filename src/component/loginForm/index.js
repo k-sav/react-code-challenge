@@ -48,7 +48,7 @@ function LoginForm() {
           version="primary"
           disabled={isPending || !email || !password || !validEmail(email)}
         >
-          Login
+          Login {isPending ? '...' : ''}
         </Button>
       </form>
     </div>

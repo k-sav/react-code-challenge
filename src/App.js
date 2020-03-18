@@ -1,15 +1,18 @@
 import React from 'react'
 
+import {AuthProvider} from './util/auth'
 import {ThemeProvider} from 'emotion-theming'
 import theme from './util/theme'
 
-import LoginForm from 'component/loginForm'
+import Home from 'screen/home'
 
 function App() {
   return (
-    <ThemeProvider theme={theme}>
-      <LoginForm />
-    </ThemeProvider>
+    <AuthProvider>
+      <ThemeProvider theme={theme}>
+        <Home />
+      </ThemeProvider>
+    </AuthProvider>
   )
 }
 

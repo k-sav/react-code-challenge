@@ -15,6 +15,8 @@ yarn
 npm install
 ```
 
+Edit the environment varaibles at `./.env.development.example` and save the file as `./.env.development`
+
 ## Usage
 
 ```sh

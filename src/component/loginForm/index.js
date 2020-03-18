@@ -4,6 +4,7 @@ import {jsx} from '@emotion/core'
 
 import TextField from 'ui/textField'
 import Button from 'ui/button'
+import {validEmail} from 'util/validation'
 
 import style from './style'
 
@@ -26,7 +27,10 @@ function LoginForm() {
           value={password}
           set={setPassword}
         />
-        <Button version="primary" disabled={!email || !password}>
+        <Button
+          version="primary"
+          disabled={!email || !password || !validEmail(email)}
+        >
           Login
         </Button>
       </form>

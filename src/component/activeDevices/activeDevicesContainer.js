@@ -10,7 +10,9 @@ const Container = () => {
 
   useInterval(async () => {
     const {devices} = await fetchDevices()
-    setDevices(devices)
+    if (devices) {
+      setDevices(devices)
+    }
   }, INTERVAL)
 
   return <ActiveDevices devices={devices} interval={INTERVAL}></ActiveDevices>

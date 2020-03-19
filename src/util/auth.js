@@ -21,11 +21,11 @@ function AuthProvider({children}) {
   })
 
   // Persist state to locastorage when we:
-  // - have transitioned to 'authorized' state
+  // - have transitioned to an 'authorized' state
   // - send the 'LOGOUT' event
 
   service.onTransition((state, event) => {
-    if (state.value === 'authorized' || event.type === 'LOGOUT')
+    if (state.matches('authorized') || event.type === 'LOGOUT')
       try {
         localStorage.setItem('stored-state', JSON.stringify(state))
       } catch (e) {

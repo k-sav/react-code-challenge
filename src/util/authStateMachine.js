@@ -32,6 +32,34 @@ function fetchUser(email = '', password = '') {
   })
 }
 
+function fetchDevices() {
+  if (!process.env.REACT_APP_API_BASE) {
+    console.error('Set REACT_APP_API_BASE in env')
+    return
+  }
+  return new Promise((resolve, reject) => {
+    let status
+    fetch(`${process.env.REACT_APP_API_BASE}/devices`, {
+      method: 'GET',
+      cache: 'no-cache',
+    })
+      .then(response => {
+        status = response.status
+        return response.json()
+      })
+      .then(data => {
+        if (status === 200) {
+          return resolve(data)
+        } else {
+          return reject(data)
+        }
+      })
+      .catch(err => {
+        return reject('Network Error')
+      })
+  })
+}
+
 // visualisation
 // https://xstate.js.org/viz/?gist=d14458ca74d0e760133fb98eba6b9d27
 const authMachine = Machine(
@@ -70,15 +98,42 @@ const authMachine = Machine(
         on: {
           LOGOUT: 'unauthorized',
         },
+        initial: 'devices_loading',
+        context: {devices: [], interval: 5000},
+        states: {
+          devices_loading: {
+            invoke: {
+              id: 'getDevices',
+              src: (context, event) => fetchDevices,
+              onDone: {
+                target: 'devices_waiting',
+                actions: assign({
+                  devices: (context, event) => event.data.devices,
+                }),
+              },
+              onError: {
+                target: 'devices_waiting',
+              },
+            },
+          },
+          devices_waiting: {
+            after: {
+              // TODO: Fix this
+              // https://xstate.js.org/docs/guides/delays.html#delayed-transitions
+              // after 5 seconds, transition to devices_loading
+              5000: {target: 'devices_loading'},
+            },
+          },
+        },
       },
     },
   },
   {
     actions: {
-      onSuccess: (context, event) => {
-        context.user = event.user
-        context.errorMessage = null
-      },
+      // onSuccess: (context, event) => {
+      //   context.user = event.user
+      //   context.errorMessage = null
+      // },
       onError: (context, event) => {
         context.errorMessage = event.errorMessage
       },

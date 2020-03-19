@@ -7,7 +7,7 @@ import UnauthenticatedApp from './unauthenticated'
 const ScreenHome = () => {
   const {xAuthState} = useContext(AuthContext)
 
-  return xAuthState.value === 'authorized' ? (
+  return xAuthState.matches('authorized') ? (
     <AuthenticatedApp />
   ) : (
     <UnauthenticatedApp />

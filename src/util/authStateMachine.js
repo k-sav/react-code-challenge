@@ -86,7 +86,10 @@ const authMachine = Machine(
           src: (context, event) => fetchUser(context.email, context.password),
           onDone: {
             target: 'authorized',
-            actions: assign({user: (context, event) => event.data}),
+            actions: assign({
+              user: (context, event) => event.data,
+              errorMessage: null,
+            }),
           },
           onError: {
             target: 'unauthorized',
@@ -143,6 +146,10 @@ const authMachine = Machine(
       changePassword: (context, event) => {
         context.password = event.value
       },
+      // onLogout: context => {
+      //   context.password = null
+      //   context.errorMessage = null
+      // },
     },
   },
 )

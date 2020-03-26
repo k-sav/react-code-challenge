@@ -1,12 +1,17 @@
-import React from 'react'
+import React, {useContext} from 'react'
+import {AuthContext} from '../util/auth'
 
-import {useAuthState} from 'util/auth'
 import AuthenticatedApp from './authenticated'
 import UnauthenticatedApp from './unauthenticated'
 
-function ScreenHome() {
-  const {isAuthenticated} = useAuthState()
-  return isAuthenticated ? <AuthenticatedApp /> : <UnauthenticatedApp />
+const ScreenHome = () => {
+  const {xAuthState} = useContext(AuthContext)
+
+  return xAuthState.matches('authorized') ? (
+    <AuthenticatedApp />
+  ) : (
+    <UnauthenticatedApp />
+  )
 }
 
 export default ScreenHome

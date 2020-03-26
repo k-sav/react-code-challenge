@@ -1,27 +1,12 @@
-import React, {useState, useCallback} from 'react'
+import React, {useContext} from 'react'
 import ActiveDevices from './activeDevicesComponent'
-import useInterval from 'util/useInterval'
-import fetchDevices, {controller} from 'util/devices'
+import {AuthContext} from 'util/auth'
 
 const INTERVAL = 5000
 
 const Container = () => {
-  const [devices, setDevices] = useState([])
-
-  const ControllerAbortCallback = useCallback(() => {
-    return controller.abort
-  }, [])
-
-  useInterval(
-    async () => {
-      const {devices} = await fetchDevices()
-      if (devices) {
-        setDevices(devices)
-      }
-    },
-    INTERVAL,
-    ControllerAbortCallback,
-  )
+  const {xAuthState} = useContext(AuthContext)
+  const {devices} = xAuthState.context
 
   return <ActiveDevices devices={devices} interval={INTERVAL}></ActiveDevices>
 }

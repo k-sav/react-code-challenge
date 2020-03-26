@@ -8,6 +8,7 @@ const style = ({colors, interval}) => {
     justify-content: center;
     background: ${colors.backgrounds.devices};
     color: white;
+    overflow: hidden;
 
     h1 {
       max-width: 120px;
